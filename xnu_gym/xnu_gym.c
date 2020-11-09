@@ -23,7 +23,8 @@ void print_help() {
   puts("\txnu_gym usage:");
   puts("\t\t-h | Prints this message");
   puts("\t\t-t | Patches task_for_pid(0) for ANY process (warning: unsafe).");
-  puts("\t\t-r | Reintroduces the Trident vulnerabilities.");
+  puts("\t\t-r | Reintroduces the Trident bug(s).");
+  puts("\t\t-m | Reintroduces the mach_portal bug(s).");
   return;
 }
 
