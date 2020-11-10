@@ -13,7 +13,9 @@
 # Restrictions
 
   **Devices: ** Devices compatible with the checkra1n jailbreak (https://checkra.in/)
+
   **iOS Version: ** I'm only supporting iOS versions 13.0 to 13.7.
+
   **Tested iOS Versions:* * iOS 13.6.1
 
 # Loading/usage
@@ -42,4 +44,5 @@
   these binaries, feel free to build the module from source!
 
   *SHA256 Hashes of builds:*
+  
     Live build: <none>
