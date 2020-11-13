@@ -1,5 +1,5 @@
 
-![Logo](/etc/logo) #A TK Cracks Project
+![Logo](logo) #A TK Cracks Project
 
 # xnu_gym
 
