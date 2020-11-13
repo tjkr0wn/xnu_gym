@@ -1,8 +1,6 @@
 
 ![Logo](logo.png)
 
-# ❤️ from TK Cracks
-
 # xnu_gym
 
   `xnu_gym` is a project meant to purposely inject bugs into an iOS kernel that are
@@ -51,3 +49,5 @@
   *SHA256 Hashes of builds:*
   
     Live build: <none>
+   
+❤️ from TK Cracks
