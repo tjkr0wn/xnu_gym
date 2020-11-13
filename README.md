@@ -1,5 +1,5 @@
 
-![Logo](logo) #A TK Cracks Project
+![Logo](logo.png) #A TK Cracks Project
 
 # xnu_gym
 
