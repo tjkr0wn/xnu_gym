@@ -5,6 +5,7 @@
 
 void (*existing_preboot_hook)();
 struct patch_t *g_top_patch = NULL;
+struct patch_t *null_patch = NULL;
 uint32_t *g_failed_patches_counter = 0;
 uint32_t g_queued_patches_counter = 0;
 
@@ -28,10 +29,10 @@ void print_help() {
   return;
 }
 
-patch_t init_new_patch(void (*cb)(uint32_t *err)) {
+struct patch_t * init_new_patch(void (*cb)(uint32_t *err)) {
   struct patch_t *patch = malloc(sizeof(struct patch_t));
   if (patch == NULL) {
-    return NULL;
+    return null_patch;
   }
   /*
   1. First added patch:
@@ -62,14 +63,14 @@ void arg_parse(const char* cmd, char* args) {
       }
 
       if (strcmp(c, "t") == 0) {
-        if (init_new_patch(&tfp0_all_callback) == NULL) {
+        if (init_new_patch(&tfp0_all_callback) == null_patch) {
           pretty_log("malloc failed!", FAIL);
           return;
         }
       }
 
       if (strcmp(c, "r") == 0) {
-        if (init_new_patch(&trident_bugs_callback) == NULL) {
+        if (init_new_patch(&trident_bugs_callback) == null_patch) {
           pretty_log("malloc failed!", FAIL);
           return;
         }
@@ -97,6 +98,7 @@ void do_all_patches() {
   }
 
   printf("xnu_gym: [*] Leaving with %d failed patches...", g_failed_patches_counter);
+  sleep(5);
   return;
 }
 
