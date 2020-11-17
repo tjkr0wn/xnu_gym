@@ -13,6 +13,11 @@
   the XNU kernel to verify some functions as well as do some reading on previous vulnerabilities
   in order to properly reintroduce them. Thanks for your patience!
 
+  Huge thanks to jsherman212 for all the help with the KPF JIT API! I took a lot of inspiration from his svc_stalker module, go check it out!
+
+  https://github.com/jsherman212/svc_stalker/
+
+
 # Restrictions
 
   **Devices: ** Devices compatible with the checkra1n jailbreak (https://checkra.in/)
@@ -47,7 +52,7 @@
   these binaries, feel free to build the module from source!
 
   *SHA256 Hashes of builds:*
-  
+
     Live build: <none>
-   
+
 ❤️ from TK Cracks
