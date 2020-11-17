@@ -184,10 +184,10 @@ typedef struct xnu_pf_patch {
 
     //            patch->pf_match(XNU_PF_ACCESS_32BIT, reads, &stream[index], &dstream[index]);
 
-} xnu_pf_patch_t;
+} xnu_pf_bug_t;
 
 typedef struct xnu_pf_patchset {
-    xnu_pf_patch_t* patch_head;
+    xnu_pf_bug_t* patch_head;
     void* jit_matcher;
     uint8_t accesstype;
     uint64_t p0;
@@ -205,14 +205,14 @@ extern xnu_pf_range_t* xnu_pf_segment(struct mach_header_64* header, char* segme
 extern xnu_pf_range_t* xnu_pf_section(struct mach_header_64* header, void* segment, char* section_name);
 extern xnu_pf_range_t* xnu_pf_all(struct mach_header_64* header);
 extern xnu_pf_range_t* xnu_pf_all_x(struct mach_header_64* header);
-extern void xnu_pf_disable_patch(xnu_pf_patch_t* patch);
-extern void xnu_pf_enable_patch(xnu_pf_patch_t* patch);
+extern void xnu_pf_disable_patch(xnu_pf_bug_t* patch);
+extern void xnu_pf_enable_patch(xnu_pf_bug_t* patch);
 extern struct segment_command_64* macho_get_segment(struct mach_header_64* header, const char* segname);
 extern struct section_64 *macho_get_section(struct segment_command_64 *seg, const char *name);
 extern struct mach_header_64* xnu_pf_get_first_kext(struct mach_header_64* kheader);
 
-extern xnu_pf_patch_t* xnu_pf_ptr_to_data(xnu_pf_patchset_t* patchset, uint64_t slide, xnu_pf_range_t* range, void* data, size_t datasz, bool required, bool (*callback)(struct xnu_pf_patch* patch, void* cacheable_stream));
-extern xnu_pf_patch_t* xnu_pf_maskmatch(xnu_pf_patchset_t* patchset, uint64_t* matches, uint64_t* masks, uint32_t entryc, bool required, bool (*callback)(struct xnu_pf_patch* patch, void* cacheable_stream));
+extern xnu_pf_bug_t* xnu_pf_ptr_to_data(xnu_pf_patchset_t* patchset, uint64_t slide, xnu_pf_range_t* range, void* data, size_t datasz, bool required, bool (*callback)(struct xnu_pf_patch* patch, void* cacheable_stream));
+extern xnu_pf_bug_t* xnu_pf_maskmatch(xnu_pf_patchset_t* patchset, uint64_t* matches, uint64_t* masks, uint32_t entryc, bool required, bool (*callback)(struct xnu_pf_patch* patch, void* cacheable_stream));
 extern void xnu_pf_emit(xnu_pf_patchset_t* patchset); // converts a patchset to JIT
 extern void xnu_pf_apply(xnu_pf_range_t* range, xnu_pf_patchset_t* patchset);
 extern xnu_pf_patchset_t* xnu_pf_patchset_create(uint8_t pf_accesstype);
