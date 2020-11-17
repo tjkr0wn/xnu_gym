@@ -4,8 +4,8 @@
 #include <bug_desc.h>
 
 void (*existing_preboot_hook)();
-struct patch_t *g_top_patch = NULL;
-struct patch_t *null_patch = NULL;
+struct bug_t *g_top_patch = NULL;
+struct bug_t *null_patch = NULL;
 uint32_t *g_failed_patches_counter = 0;
 uint32_t g_queued_patches_counter = 0;
 
@@ -29,8 +29,8 @@ void print_help() {
   return;
 }
 
-struct patch_t * init_new_patch(void (*cb)(uint32_t *err)) {
-  struct patch_t *patch = malloc(sizeof(struct patch_t));
+struct bug_t * init_new_patch(void (*cb)(uint32_t *err)) {
+  struct bug_t *patch = malloc(sizeof(struct bug_t));
   if (patch == NULL) {
     return null_patch;
   }
@@ -89,7 +89,7 @@ void do_all_patches() {
   pretty_log("Entered pre-boot hook; doing patches...", INFO);
 
   int i;
-  struct patch_t *current_looped_patch;
+  struct bug_t *current_looped_patch;
   for (i = 0; i < g_queued_patches_counter; i++) {
     current_looped_patch = g_top_patch;
     current_looped_patch->cb(g_failed_patches_counter);
@@ -98,7 +98,11 @@ void do_all_patches() {
   }
 
   printf("xnu_gym: [*] Leaving with %d failed patches...", g_failed_patches_counter);
+
+  /*Sleeping for enough time for the user to catch an error message before boot.*/
+  
   sleep(5);
+
   return;
 }
 
