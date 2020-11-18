@@ -87,7 +87,7 @@ void do_all_patches() {
     free(current_looped_patch);
   }
 
-  printf("xnu_gym: [*] Leaving with %d failed patches...", g_failed_patches_counter);
+  printf("xnu_gym: [*] Leaving with %d failed patches...", *g_failed_patches_counter);
 
   /*Sleeping for enough time for the user to catch an error message before boot.*/
 
@@ -98,13 +98,11 @@ void do_all_patches() {
 
 void module_entry() {
   pretty_log("Initializing xnu_gym...", INFO);
-  //Just good practice
-  //command_unregister("xnu_gym");
   #ifdef DEBUG
     DEBUG("DEBUG enabled");
   #endif
 
-  existing_preboot_hook = preboot_hook;
+  existing_preboot_hook = NULL;
   preboot_hook = do_all_patches;
   command_register("xnu_gym", "Send 'xnu_gym -h' for a list of commands", arg_parse);
 }

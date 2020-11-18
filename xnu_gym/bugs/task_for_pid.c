@@ -63,6 +63,5 @@ void tfp0_all_callback(int *err) {
   xnu_pf_apply(TEXTEXEC, patchset);
   xnu_pf_patchset_destroy(patchset);
 
-
   return;
 }
