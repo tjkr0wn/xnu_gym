@@ -9,7 +9,7 @@ void tfp0_all_callback(uint32_t *err) {
 
   xnu_pf_patchset_t *patchset = xnu_pf_patchset_create(XNU_PF_ACCESS_32BIT);
   struct mach_header_64 *main_header =  xnu_header();
-  struct segment_command_64 *TEXTEXEC = macho_get_segment(main_header, "__TEXT_EXEC");
+  struct segment_command_64 *TEXTEXEC = xnu_pf_segment(main_header, "__TEXT_EXEC");
 
   uint64_t task_for_pid_posix_check_opcodes[] = {
     0x130dee87,     /* bl sub_xxx */
