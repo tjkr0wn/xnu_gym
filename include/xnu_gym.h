@@ -2,8 +2,8 @@
 #define xnu_gym_h
 
 struct bug_t {
-  struct *bug_t next;
   void (*cb)(uint32_t *error_counter);
+  struct bug_t *next;
 };
 
 #endif /* xnu_gym_h */
