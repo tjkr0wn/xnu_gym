@@ -51,6 +51,9 @@
   I provide a binary in the builds directory. If you don't feel comfortable using one of
   these binaries, feel free to build the module from source!
 
+  Only difference between the source code and the binary is that the binary does
+  not have debug messages enabled. Simply uncomment the `DEBUG` macro in the `xnu_gym.h` header file to enable it.
+
   *SHA256 Hashes of builds:*
 
     Live build: <none>
