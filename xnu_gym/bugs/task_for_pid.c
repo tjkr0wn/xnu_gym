@@ -27,7 +27,7 @@ static bool handle_inline_task_for_pid_check(struct xnu_pf_patch* patch, void* c
   return true;
 }
 
-void tfp0_all_callback(uint32_t *err) {
+void tfp0_all_callback(int *err) {
   pretty_log("Doing tfp0 patches. Transferring output to match handlers...", INFO);
 
   xnu_pf_patchset_t *patchset = xnu_pf_patchset_create(XNU_PF_ACCESS_32BIT);

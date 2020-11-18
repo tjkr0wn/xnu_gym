@@ -6,8 +6,8 @@
 void (*existing_preboot_hook)();
 struct bug_t *g_top_patch = NULL;
 struct bug_t *null_patch = NULL;
-uint32_t *g_failed_patches_counter = 0;
-uint32_t g_queued_patches_counter = 0;
+int *g_failed_patches_counter = 0;
+int g_queued_patches_counter = 0;
 
 void pretty_log(char *m, uint32_t err) {
   if (err == SUCCESS)
@@ -30,7 +30,7 @@ void print_help() {
   return;
 }
 
-void init_new_patch(void (*cb)(uint32_t *err)) {
+void init_new_patch(void (*cb)(int *err)) {
   #ifdef DEBUG
     DEBUG("Making a patch...");
   #endif
@@ -74,7 +74,6 @@ void arg_parse(const char* cmd, char* args) {
 
 void do_all_patches() {
   pretty_log("Entered pre-boot hook; doing patches...", INFO);
-  printf("g_queued_patches_counter: %d", g_queued_patches_counter);
 
   int i;
   struct bug_t *current_looped_patch;

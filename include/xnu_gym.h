@@ -5,7 +5,7 @@
 #define DEBUG(m) (pretty_log(m, INFO))
 
 struct bug_t {
-  void (*cb)(uint32_t *error_counter);
+  void (*cb)(int *error_counter);
   struct bug_t *next;
 };
 
