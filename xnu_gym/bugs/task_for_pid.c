@@ -40,7 +40,7 @@ void tfp0_all_callback(uint32_t *err) {
   xnu_pf_apply(TEXTEXEC, patchset);
   xnu_pf_patchset_destroy(patchset);
 
-  
+
   return;
 }
 
@@ -49,7 +49,7 @@ static bool handle_task_for_pid_posix_check(struct xnu_pf_patch* patch, void* ca
   xnu_pf_disable_patch(patch);
 
 
-  return;
+  return true;
 }
 
 static bool handle_task_conversion_eval(struct xnu_pf_patch* patch, void* cacheable_stream) {
@@ -57,7 +57,7 @@ static bool handle_task_conversion_eval(struct xnu_pf_patch* patch, void* cachea
   xnu_pf_disable_patch(patch);
 
 
-  return;
+  return true;
 }
 
 static bool handle_inline_task_for_pid_check(struct xnu_pf_patch* patch, void* cacheable_stream) {
@@ -65,5 +65,5 @@ static bool handle_inline_task_for_pid_check(struct xnu_pf_patch* patch, void* c
   xnu_pf_disable_patch(patch);
 
 
-  return;
+  return true;
 }
