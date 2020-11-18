@@ -3,7 +3,30 @@
 
 extern void pretty_log(char *m, uint32_t err);
 
-//TODO
+static bool handle_task_for_pid_posix_check(struct xnu_pf_patch* patch, void* cacheable_stream) {
+  printf("\t%s: Started\n", __func__);
+  xnu_pf_disable_patch(patch);
+
+
+  return true;
+}
+
+static bool handle_task_conversion_eval(struct xnu_pf_patch* patch, void* cacheable_stream) {
+  printf("\t%s: Started\n", __func__);
+  xnu_pf_disable_patch(patch);
+
+
+  return true;
+}
+
+static bool handle_inline_task_for_pid_check(struct xnu_pf_patch* patch, void* cacheable_stream) {
+  printf("\t%s: Started\n", __func__);
+  xnu_pf_disable_patch(patch);
+
+
+  return true;
+}
+
 void tfp0_all_callback(uint32_t *err) {
   pretty_log("Doing tfp0 patches. Transferring output to match handlers...", INFO);
 
@@ -42,28 +65,4 @@ void tfp0_all_callback(uint32_t *err) {
 
 
   return;
-}
-
-static bool handle_task_for_pid_posix_check(struct xnu_pf_patch* patch, void* cacheable_stream) {
-  printf("\t%s: Started\n", __func__);
-  xnu_pf_disable_patch(patch);
-
-
-  return true;
-}
-
-static bool handle_task_conversion_eval(struct xnu_pf_patch* patch, void* cacheable_stream) {
-  printf("\t%s: Started\n", __func__);
-  xnu_pf_disable_patch(patch);
-
-
-  return true;
-}
-
-static bool handle_inline_task_for_pid_check(struct xnu_pf_patch* patch, void* cacheable_stream) {
-  printf("\t%s: Started\n", __func__);
-  xnu_pf_disable_patch(patch);
-
-
-  return true;
 }
