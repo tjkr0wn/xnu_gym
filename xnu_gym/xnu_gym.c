@@ -18,6 +18,18 @@ void pretty_log(char *m, uint32_t err) {
     printf("xnu_gym: [*] %s\n", m);
   else if (err == PATCH)
     printf("xnu_gym: [-] %s\n", m);
+  return;
+}
+
+#define DEBUG
+
+void debug(char *m) {
+  #ifndef DEBUG
+    return;
+  #else
+    pretty_log(m, INFO);
+    return;
+  #endif
 }
 
 void print_help() {
@@ -30,6 +42,7 @@ void print_help() {
 }
 
 struct bug_t * init_new_patch(void (*cb)(uint32_t *err)) {
+  debug("Making a patch...");
   struct bug_t *patch = malloc(sizeof(struct bug_t));
   if (patch == NULL) {
     return null_patch;
@@ -52,6 +65,7 @@ void arg_parse(const char* cmd, char* args) {
   uint32_t mode = 0;
 
   for (c = &args[0]; *c != '\0'; c++ ) {
+    printf("Is current looped char == to t? %d\n", strcmp(c, "t"));
     if (strcmp(c, "-") == 104) { //No clue why this works :)
       mode = 1;
       continue;
@@ -59,17 +73,18 @@ void arg_parse(const char* cmd, char* args) {
     if (mode == 1) {
       if(strcmp(c, "h") == 0) {
         print_help();
-        break;
       }
 
-      if (strcmp(c, "t") == 0) {
+      else if (strcmp(c, "t") == 0) {
+        debug("Hit t");
         if (init_new_patch(&tfp0_all_callback) == null_patch) {
           pretty_log("malloc failed!", FAIL);
           return;
         }
       }
 
-      if (strcmp(c, "r") == 0) {
+      else if (strcmp(c, "r") == 0) {
+        debug("Hit r");
         if (init_new_patch(&trident_bugs_callback) == null_patch) {
           pretty_log("malloc failed!", FAIL);
           return;
@@ -82,15 +97,13 @@ void arg_parse(const char* cmd, char* args) {
 }
 
 void do_all_patches() {
-  /*
-  if (existing_preboot_hook != NULL)
-    existing_preboot_hook();
-  */
   pretty_log("Entered pre-boot hook; doing patches...", INFO);
+  printf("g_queued_patches_counter: %d", g_queued_patches_counter);
 
   int i;
   struct bug_t *current_looped_patch;
   for (i = 0; i < g_queued_patches_counter; i++) {
+    debug("Looped through callbacks...");
     current_looped_patch = g_top_patch;
     current_looped_patch->cb(g_failed_patches_counter);
     g_top_patch = current_looped_patch->next;
@@ -100,14 +113,19 @@ void do_all_patches() {
   printf("xnu_gym: [*] Leaving with %d failed patches...", g_failed_patches_counter);
 
   /*Sleeping for enough time for the user to catch an error message before boot.*/
-  
-  sleep(5);
+
+  if (existing_preboot_hook) {
+    existing_preboot_hook();
+  }
+
+  for (;;) {};
 
   return;
 }
 
 void module_entry() {
   pretty_log("Initializing xnu_gym...", INFO);
+  debug("Debug enabled");
   existing_preboot_hook = preboot_hook;
   preboot_hook = do_all_patches;
   command_register("xnu_gym", "Send 'xnu_gym -h' for a list of commands", arg_parse);
