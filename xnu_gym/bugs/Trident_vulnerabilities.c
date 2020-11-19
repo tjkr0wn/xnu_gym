@@ -1,11 +1,10 @@
 #include <pongo.h>
 #include <defs.h>
 
-extern void pretty_log(char *m, uint32_t err);
+extern void pretty_log(char *m, int err);
 
-//TODO
 void trident_bugs_callback(int *err) {
-  //could be crashing here?
+  pretty_log("Doing Trident bugs patches. Transferring output to match handlers...", INFO);
   //*err += SUCCESS;
   return;
 }
