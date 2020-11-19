@@ -9,16 +9,24 @@ struct bug_t *null_patch = NULL;
 int *g_failed_patches_counter = 0;
 int g_queued_patches_counter = 0;
 
-void pretty_log(char *m, uint32_t err) {
-  if (err == SUCCESS)
-    printf("xnu_gym: [+] %s\n", m);
-  else if (err == FAIL)
-    printf("xnu_gym: [!] %s\n", m);
-  else if (err == INFO)
-    printf("xnu_gym: [*] %s\n", m);
-  else if (err == PATCH)
-    printf("xnu_gym: [-] %s\n", m);
-  return;
+void pretty_log(char *m, int err) {
+  switch (err) {
+    case SUCCESS:
+      printf("xnu_gym: [+] %s\n", m);
+      return;
+    case FAIL:
+      printf("xnu_gym: [!] %s\n", m);
+      return;
+    case INFO:
+      printf("xnu_gym: [*] %s\n", m);
+      return;
+    case PATCH:
+      printf("xnu_gym: [-] %s\n", m);
+      return;
+    case DG:
+      printf("xnu_gym: [DEBUG] %s\n", m);
+      return;
+  }
 }
 
 void print_help() {
@@ -65,10 +73,11 @@ void arg_parse(const char* cmd, char* args) {
     print_help();
 
   else if (ARG_EXISTS(args, "-t") != NULL))
-    init_new_patch(&tfp0_all_callback);
+    init_new_patch(tfp0_all_callback);
 
   else if (ARG_EXISTS(args, "-r") != NULL))
-    init_new_patch(&trident_bugs_callback);
+    init_new_patch(trident_bugs_callback);
+
   return;
 }
 
@@ -83,15 +92,24 @@ void do_all_patches() {
     #endif
     current_looped_patch = g_top_patch;
     current_looped_patch->cb(g_failed_patches_counter);
+    #ifdef DEBUG
+      DEBUG("Left callback");
+    #endif
     g_top_patch = current_looped_patch->next;
+    #ifdef DEBUG
+      DEBUG("Set next patch from linked list");
+    #endif
     free(current_looped_patch);
+    #ifdef DEBUG
+      DEBUG("Freed performed patch");
+    #endif
   }
 
-  printf("xnu_gym: [*] Leaving with %d failed patches...", *g_failed_patches_counter);
+  printf("xnu_gym: [*] Leaving with %d failed patches...\n", g_failed_patches_counter);
 
   /*Sleeping for enough time for the user to catch an error message before boot.*/
 
-  for (;;) {};
+  sleep(10);
 
   return;
 }
