@@ -45,4 +45,4 @@ try:
     dev.ctrl_transfer(0x21, 3, 0, 0, "bootx\n")
 
 except:
-    break
+    pass
