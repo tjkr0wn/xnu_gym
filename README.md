@@ -25,7 +25,8 @@
   **iOS Version: ** I'm only supporting iOS versions 13.0 to 13.7.
 
   **Tested device/iOS Versions: ** 
-      iPhone 8 global (iPhone10,1)
+  
+      *iPhone 8 global (iPhone10,1)*
       
         iOS 13.6.1 (17G80)
         
