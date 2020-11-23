@@ -13,7 +13,7 @@
   the XNU kernel to verify some functions as well as do some reading on previous vulnerabilities
   in order to properly reintroduce them. Thanks for your patience!
 
-  Huge thanks to jsherman212 for all the help with the KPF JIT API! I took a lot of inspiration from his svc_stalker module, go check it out!
+  Huge thanks to jsherman212 for all the help with the KPF JIT API! I took a lot of inspiration from his `svc_stalker` module, go check it out!
 
   https://github.com/jsherman212/svc_stalker/
 
@@ -24,7 +24,13 @@
 
   **iOS Version: ** I'm only supporting iOS versions 13.0 to 13.7.
 
-  **Tested iOS Versions:* * iOS 13.6.1
+  **Tested device/iOS Versions: ** 
+      iPhone 8 global (iPhone10,1)
+      
+        iOS 13.6.1 (17G80)
+        
+        iOS 13.0 (17A577)
+        
 
 # Loading/usage
 
@@ -57,5 +63,12 @@
   *SHA256 Hashes of builds:*
 
     Live build: <none>
+
+# Issues
+
+  There may be some issues with finding opcode sequences/matching. If so, please submite an issue on this repo and I'll
+  check it out!
+  
+  If any other peculiar errors arrise, please do the same process!
 
 ❤️ from TK Cracks
