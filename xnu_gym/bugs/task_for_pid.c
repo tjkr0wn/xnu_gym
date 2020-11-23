@@ -34,10 +34,14 @@ void tfp0_all_callback(int *err) {
   struct mach_header_64 *main_header = xnu_header();
   xnu_pf_range_t *TEXTEXEC = xnu_pf_segment(main_header, "__TEXT_EXEC");
 
+  /*
+  Not official patches; testing pf with JIT to ensure correct usage of
+  the API
+  */
   uint64_t task_for_pid_posix_check_opcodes[] = {
-    0x130dee87,     /* bl sub_xxx */
-    0x88d038d5,     /* mrs x_, tpidr_el1 */
-    0x088d41f9      /* ldr x8, [xn, #0xn]*/
+    0x130dee87,     /* bl fcn.fffffff007c016ac */
+    0x88d038d5,     /* mrs x8, tpidr_el1 */
+    0x088d41f9      /* ldr x8, [x8, 0x318]*/
   };
 
   const size_t task_for_pid_posix_check_opcodes_c =
@@ -45,9 +49,9 @@ void tfp0_all_callback(int *err) {
       sizeof(*task_for_pid_posix_check_opcodes);
 
   uint64_t task_for_pid_posix_check_masks[] = {
-    0xfc000000,     /* ignore immediate */
-    0xffffffe0,     /* ignore x_ in mrs */
-    0xffc0001f      /*  ignore [] */
+    0xffffffff,     /* match exactly */
+    0xffffffff,
+    0xffffffff
   };
 
   #ifdef DEBUG
