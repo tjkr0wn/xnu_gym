@@ -20,11 +20,11 @@
 
 # Restrictions
 
-  **Devices: ** Devices compatible with the checkra1n jailbreak (https://checkra.in/)
+  **Devices:** Devices compatible with the checkra1n jailbreak (https://checkra.in/)
 
-  **iOS Version: ** I'm only supporting iOS versions 13.0 to 13.7.
+  **iOS Version:** I'm only supporting iOS versions 13.0 to 13.7.
 
-  **Tested device/iOS Versions: ** 
+  **Tested device/iOS Versions:** 
   
       *iPhone 8 global (iPhone10,1)*
       
