@@ -39,9 +39,7 @@ static void print_help() {
 }
 
 void init_new_patch(int (*cb)()) {
-  #ifdef DEBUG
-    DEBUG("Making a patch...");
-  #endif
+  DEBUG("Making a patch...");
 
   struct bug_t *patch = malloc(sizeof(struct bug_t));
   if (patch == NULL) {
@@ -96,9 +94,7 @@ static void do_all_patches() {
 
 void module_entry() {
   pretty_log("Initializing xnu_gym...", INFO);
-  #ifdef DEBUG
-    DEBUG("DEBUG enabled");
-  #endif
+  DEBUG("DEBUG enabled");
 
   existing_preboot_hook = NULL;
   preboot_hook = do_all_patches;
