@@ -5,6 +5,8 @@ extern void pretty_log(char *m, int err);
 
 static bool handle_task_for_pid_posix_check(struct xnu_pf_patch* patch, void* cacheable_stream) {
   printf("Entered matchhandler\n");
+  //testing
+  print("Landed here: %x \n", cacheable_stream);
   xnu_pf_disable_patch(patch);
 
 
@@ -27,21 +29,26 @@ static bool handle_inline_task_for_pid_check(struct xnu_pf_patch* patch, void* c
   return true;
 }
 
-void tfp0_all_callback(int *err) {
+int tfp0_all_callback() {
   pretty_log("Doing tfp0 patches. Transferring output to match handlers...", INFO);
 
   xnu_pf_patchset_t *patchset = xnu_pf_patchset_create(XNU_PF_ACCESS_32BIT);
   struct mach_header_64 *main_header = xnu_header();
   xnu_pf_range_t *TEXTEXEC = xnu_pf_segment(main_header, "__TEXT_EXEC");
 
+  if (!patchset || !main_header || !TEXTEXEC) {
+    pretty_log("Got a NULL value!");
+    return 1;
+  }
+
   /*
   Not official patches; testing pf with JIT to ensure correct usage of
   the API
   */
   uint64_t task_for_pid_posix_check_opcodes[] = {
-    0x130dee87,     /* bl fcn.fffffff007c016ac */
-    0x88d038d5,     /* mrs x8, tpidr_el1 */
-    0x088d41f9      /* ldr x8, [x8, 0x318]*/
+    0x94000000,     /* bl fcn.xxx */
+    0xd538d080,     /* mrs xn, tpidr_el1 */
+    0xf9418d08      /* ldr x8, [x8, 0x318]*/
   };
 
   const size_t task_for_pid_posix_check_opcodes_c =
@@ -49,14 +56,11 @@ void tfp0_all_callback(int *err) {
       sizeof(*task_for_pid_posix_check_opcodes);
 
   uint64_t task_for_pid_posix_check_masks[] = {
-    0xffffffff,     /* match exactly */
-    0xffffffff,
+    0xfc000000,     /* mask immediate */
+    0xffffffe0,     /* mask register */
     0xffffffff
   };
 
-  #ifdef DEBUG
-    DEBUG("Matching masks with opcodes...");
-  #endif
 
   xnu_pf_maskmatch(
             patchset,
@@ -68,13 +72,9 @@ void tfp0_all_callback(int *err) {
             handle_task_for_pid_posix_check
   );
 
-  #ifdef DEBUG
-    DEBUG("Entering JIT-conversion and applications sequence...");
-  #endif
-
   xnu_pf_emit(patchset);
   xnu_pf_apply(TEXTEXEC, patchset);
-  xnu_pf_patchset_destroy(patchset);
 
+  xnu_pf_patchset_destroy(patchset);
   return;
 }

@@ -5,7 +5,7 @@
 #define BUG_INSERT_TRIDENT 24
 #define BUG_INSERT_MACH_PORTAL 36
 
-extern void trident_bugs_callback(int *err);
-extern void tfp0_all_callback(int *err);
+extern int trident_bugs_callback();
+extern int tfp0_all_callback();
 
 #endif /*bug_desc_h*/

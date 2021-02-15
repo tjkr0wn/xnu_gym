@@ -5,9 +5,8 @@
 #define DEBUG(m) (pretty_log(m, DG))
 
 struct bug_t {
-  void (*cb)(int *error_counter);
+  int (*cb)();
   struct bug_t *next;
 };
-
 
 #endif /* xnu_gym_h */

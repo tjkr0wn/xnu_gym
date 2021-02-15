@@ -7,4 +7,6 @@
 #define PATCH 4
 #define DG 5
 
+#define SPIN() (while(true);)
+
 #endif /* defs_h */

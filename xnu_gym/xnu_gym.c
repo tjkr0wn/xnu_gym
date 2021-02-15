@@ -6,8 +6,8 @@
 void (*existing_preboot_hook)();
 struct bug_t *g_top_patch = NULL;
 struct bug_t *null_patch = NULL;
-int *g_failed_patches_counter = 0;
 int g_queued_patches_counter = 0;
+int *g_failed_patches_counter = 0;
 
 void pretty_log(char *m, int err) {
   switch (err) {
@@ -38,7 +38,7 @@ void print_help() {
   return;
 }
 
-void init_new_patch(void (*cb)(int *err)) {
+void init_new_patch(int (*cb)()) {
   #ifdef DEBUG
     DEBUG("Making a patch...");
   #endif
@@ -50,9 +50,9 @@ void init_new_patch(void (*cb)(int *err)) {
   }
   /*
   1. First added patch:
-    [BOTTOM] < |Bug 1, next=NULL|> [TOP]
+    [BOTTOM] <Bug 1, next=NULL> [TOP]
   2. Second added patch:
-    [BOTTOM] < |Bug 1, next=NULL| >   < |Bug 2, next=Bug 1|> [TOP]
+    [BOTTOM] <Bug 1, next=NULL> <Bug 2, next=Bug 1> [TOP]
   */
   patch->cb = cb;
   patch->next = g_top_patch;
@@ -65,10 +65,6 @@ void init_new_patch(void (*cb)(int *err)) {
 Don't look at this abomination...
 */
 void arg_parse(const char* cmd, char* args) {
-  #ifdef DEBUG
-    DEBUG("Entered arg_parse");
-  #endif
-
   if (ARG_EXISTS(args, "-h") != NULL))
     print_help();
 
@@ -84,32 +80,22 @@ void arg_parse(const char* cmd, char* args) {
 void do_all_patches() {
   pretty_log("Entered pre-boot hook; doing patches...", INFO);
 
-  int i;
+  int i, r;
   struct bug_t *current_looped_patch;
   for (i = 0; i < g_queued_patches_counter; i++) {
-    #ifdef DEBUG
-      DEBUG("Looped through callbacks...");
-    #endif
     current_looped_patch = g_top_patch;
-    current_looped_patch->cb(g_failed_patches_counter);
-    #ifdef DEBUG
-      DEBUG("Left callback");
-    #endif
+    r = current_looped_patch->cb();
+    g_failed_patches_counter += r;
     g_top_patch = current_looped_patch->next;
-    #ifdef DEBUG
-      DEBUG("Set next patch from linked list");
-    #endif
     free(current_looped_patch);
-    #ifdef DEBUG
-      DEBUG("Freed performed patch");
-    #endif
   }
 
   printf("xnu_gym: [*] Leaving with %d failed patches...\n", g_failed_patches_counter);
 
-  /*Sleeping for enough time for the user to catch an error message before boot.*/
+  /*Spinning for enough time for the user to catch an error message before boot.*/
 
-  sleep(10);
+  if (g_failed_patches_counter > 0)
+    SPIN();
 
   return;
 }
