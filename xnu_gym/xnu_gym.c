@@ -29,7 +29,7 @@ void pretty_log(char *m, int err) {
   }
 }
 
-void print_help() {
+static void print_help() {
   puts("\txnu_gym usage:");
   puts("\t\t-h | Prints this message");
   puts("\t\t-t | Patches task_for_pid(0) for ANY process (warning: unsafe).");
@@ -61,23 +61,17 @@ void init_new_patch(int (*cb)()) {
   return;
 }
 
-/*
-Don't look at this abomination...
-*/
 void arg_parse(const char* cmd, char* args) {
-  if (ARG_EXISTS(args, "-h") != NULL))
-    print_help();
+  if (ARG_EXISTS(args, "-h"))      print_help();
 
-  else if (ARG_EXISTS(args, "-t") != NULL))
-    init_new_patch(tfp0_all_callback);
+  else if (ARG_EXISTS(args, "-t")) init_new_patch(tfp0_all_callback);
 
-  else if (ARG_EXISTS(args, "-r") != NULL))
-    init_new_patch(trident_bugs_callback);
+  else if (ARG_EXISTS(args, "-r")) init_new_patch(trident_bugs_callback);
 
   return;
 }
 
-void do_all_patches() {
+static void do_all_patches() {
   pretty_log("Entered pre-boot hook; doing patches...", INFO);
 
   int i, r;
