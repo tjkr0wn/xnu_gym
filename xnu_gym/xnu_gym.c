@@ -33,6 +33,7 @@ static void print_help() {
   puts("\txnu_gym usage:");
   puts("\t\t-h | Prints this message");
   puts("\t\t-t | Patches task_for_pid(0) for ANY process (warning: unsafe).");
+  puts("\t\t-s | Reintroduces the sock_puppet bug.");
   puts("\t\t-r | Reintroduces the Trident bug(s).");
   puts("\t\t-m | Reintroduces the mach_portal bug(s).");
   return;
@@ -62,9 +63,11 @@ void init_new_patch(int (*cb)()) {
 void arg_parse(const char* cmd, char* args) {
   if (ARG_EXISTS(args, "-h"))      print_help();
 
-  else if (ARG_EXISTS(args, "-t")) init_new_patch(tfp0_all_callback);
+  NEWENTRY("-t", tfp0_all_callback);
 
-  else if (ARG_EXISTS(args, "-r")) init_new_patch(trident_bugs_callback);
+  NEWENTRY("-r", trident_bugs_callback);
+
+  NEWENTRY("-s", sock_puppet_all_callback);
 
   return;
 }
@@ -85,6 +88,7 @@ static void do_all_patches() {
   printf("xnu_gym: [*] Leaving with %d failed patches...\n", g_failed_patches_counter);
 
   /*Spinning for enough time for the user to catch an error message before boot.*/
+  /*Can exit pongo by just holding buttons*/
 
   if (g_failed_patches_counter > 0)
     SPIN();

@@ -4,7 +4,7 @@
 extern void pretty_log(char *m, int err);
 
 static bool handle_task_for_pid_posix_check(struct xnu_pf_patch* patch, void* cacheable_stream) {
-  printf("Entered matchhandler\n");
+  printf("%s: Entered matchhandler\n", __func__);
   //testing
   print("Landed here: %x \n", cacheable_stream);
   xnu_pf_disable_patch(patch);
@@ -14,7 +14,7 @@ static bool handle_task_for_pid_posix_check(struct xnu_pf_patch* patch, void* ca
 }
 
 static bool handle_task_conversion_eval(struct xnu_pf_patch* patch, void* cacheable_stream) {
-  printf("Entered matchhandler\n");
+  printf("%s: Entered matchhandler\n", __func__);
   xnu_pf_disable_patch(patch);
 
 
@@ -22,7 +22,7 @@ static bool handle_task_conversion_eval(struct xnu_pf_patch* patch, void* cachea
 }
 
 static bool handle_inline_task_for_pid_check(struct xnu_pf_patch* patch, void* cacheable_stream) {
-  printf("Entered matchhandler\n");
+  printf("%s: Entered matchhandler\n", __func__);
   xnu_pf_disable_patch(patch);
 
 
@@ -46,8 +46,8 @@ int tfp0_all_callback() {
   the API
   */
   uint64_t task_for_pid_posix_check_opcodes[] = {
-    0x94000000,     /* bl fcn.xxx */
-    0xd538d080,     /* mrs xn, tpidr_el1 */
+    0x94000000,     /* bl XXX */
+    0xd538d080,     /* mrs xX, tpidr_el1 */
     0xf9418d08      /* ldr x8, [x8, 0x318]*/
   };
 
