@@ -21,4 +21,4 @@
 #  This file is part of pongoOS.
 #
 cd "$(dirname $0)"
-xcrun -sdk sdk gcc xnu_gym.c bugs/task_for_pid.c bugs/Trident_vulnerabilities.c -o builds/xnu_gym -arch arm64 -mabi=aapcs -Xlinker -kext -nostdlib -Xlinker -fatal_warnings -I../include -D_SECURE__STRING_H_ -O3
+xcrun -sdk sdk gcc xnu_gym.c bugs/task_for_pid.c bugs/Trident_vulnerabilities.c bugs/sock_puppet.c -o builds/xnu_gym -arch arm64 -mabi=aapcs -Xlinker -kext -nostdlib -Xlinker -fatal_warnings -I../include -D_SECURE__STRING_H_ -O3

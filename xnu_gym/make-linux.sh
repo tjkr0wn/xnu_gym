@@ -21,4 +21,4 @@
 #  This file is part of pongoOS.
 #
 cd "$(dirname $0)"
-arm64-apple-ios12.0.0-clang main.c -o test_module -arch arm64 -mabi=aapcs -Xlinker -kext -nostdlib -Xlinker -fatal_warnings -I../include/ -D_SECURE__STRING_H_ -O3 
+clang xnu_gym.c bugs/task_for_pid.c bugs/Trident_vulnerabilities.c bugs/sock_puppet.c -o builds/xnu_gym -arch arm64 -mabi=aapcs -Xlinker -kext -nostdlib -Xlinker -fatal_warnings -I../include/ -D_SECURE__STRING_H_ -O3 
