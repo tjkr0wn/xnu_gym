@@ -5,8 +5,6 @@ extern void pretty_log(char *m, int err);
 
 static bool handle_task_for_pid_posix_check(struct xnu_pf_patch* patch, void* cacheable_stream) {
   printf("%s: Entered matchhandler\n", __func__);
-  //testing
-  print("Landed here: %x \n", cacheable_stream);
   xnu_pf_disable_patch(patch);
 
 
@@ -37,7 +35,7 @@ int tfp0_all_callback() {
   xnu_pf_range_t *TEXTEXEC = xnu_pf_segment(main_header, "__TEXT_EXEC");
 
   if (!patchset || !main_header || !TEXTEXEC) {
-    pretty_log("Got a NULL value!");
+    pretty_log("Got a NULL value!", FAIL);
     return 1;
   }
 
@@ -76,5 +74,5 @@ int tfp0_all_callback() {
   xnu_pf_apply(TEXTEXEC, patchset);
 
   xnu_pf_patchset_destroy(patchset);
-  return;
+  return 0;
 }
