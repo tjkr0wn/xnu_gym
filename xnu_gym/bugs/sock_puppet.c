@@ -11,7 +11,7 @@ int sock_puppet_all_callback() {
   xnu_pf_range_t *TEXTEXEC = xnu_pf_segment(main_header, "__TEXT_EXEC");
 
   if (!patchset || !main_header || !TEXTEXEC) {
-    pretty_log("Got a NULL value!");
+    pretty_log("Got a NULL value!", FAIL);
     return 1;
   }
 
@@ -63,6 +63,66 @@ int sock_puppet_all_callback() {
 static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_stream) {
   printf("%s: Entered matchhandler\n", __func__);
   xnu_pf_disable_patch(patch);
+
+  uint32_t *opcode_stream = cacheable_stream;
+
+  bool found_mov = false;
+  bool found_patch = false;
+
+  /*
+
+  Now we have to scroll back until we find the sequence where the former ip6_freepcbopts is embedded;
+
+  ip6_clearpktopts(pktopt, -1); <== We can easily look for this, as the arg is a simple mov with a negative value,
+  and there aren't any negative values used closer to the entry than this. The instruction we look for is mov xX,#-0x1
+
+	FREE(pktopt, M_IP6OPT);
+
+  */
+
+  //0x92800000 = mov xX, #-0x1
+  //& val = 0xFFFFFFE0, will include opcode, shift, and the immediate (-1)
+  for (int i = 0; i < 50; i++) {
+    if (*opcode_stream & 0xFFFFFFE0 == 0x92800000) {
+      found_mov = true;
+      break;
+    }
+    opcode_stream--;
+  }
+
+  if (!found_mov) {
+    pretty_log("Couldn't find a negative immediate for a mov instr!", FAIL);
+    SPIN();
+  }
+
+  DEBUG("Found an instr with - val!");
+
+  /*
+
+  Lastly, we have to increment the stream to find where inp->in6p_outputopts is NULL'ed. This is extremely trivial
+  and can be found simply by looking for a str xzr,[xX, #0xXXX].
+
+  */
+
+  //0xF900001F = str xzr,[xX, #0xXXX]
+  //& val = 0xFFC0001F, will include opcode, store register
+  for (int i = 0; i < 25; i++) {
+    if (*opcode_stream & 0xFFC0001F == 0xF900001F) {
+      found_patch = true;
+      break;
+    }
+    opcode_stream--;
+  }
+
+  if (!found_patch) {
+    pretty_log("Couldn't find inp->in6p_outputopts == NULL!", FAIL);
+    SPIN();
+  }
+
+  //And we just replace it with a nop :)
+  //mov x0, x0 = 0x52800001
+
+  *opcode_stream = 0x52800001;
 
   return true;
 }
