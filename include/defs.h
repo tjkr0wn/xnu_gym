@@ -10,6 +10,8 @@
 #define DEBUG(m) (pretty_log(m, DG))
 //#define DEBUG(m) (asm volatile("mov x0, x0\n"))
 
-#define SPIN() (while(1){})
+#define SPIN() int f = 0;    \ 
+	while (true) {       \
+		f = 1;}      \
 
 #endif /* defs_h */
