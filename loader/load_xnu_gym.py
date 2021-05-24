@@ -22,6 +22,7 @@ dev.ctrl_transfer(0x21, 3, 0, 0, "modload\n")
 
 print("\txnu_gym commands:")
 print("\t\tt | Patches task_for_pid(0) for ANY process (warning: unsafe).")
+print("\t\ts | Reintroduces the sock_puppet bug.")
 print("\t\tr | Reintroduces the Trident bug(s).")
 print("\t\tm | Reintroduces the mach_portal bug(s).")
 
@@ -31,6 +32,8 @@ while True:
     i = input(">")
     if i == "t":
         dev.ctrl_transfer(0x21, 3, 0, 0, "xnu_gym -t\n")
+    elif i = "s":
+	dev.ctrl_transfer(0x21, 3, 0, 0, "xnu_gym -s\n")
     elif i == "r":
         dev.ctrl_transfer(0x21, 3, 0, 0, "xnu_gym -r\n")
     elif i == "m":
