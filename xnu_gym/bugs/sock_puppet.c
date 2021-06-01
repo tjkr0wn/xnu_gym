@@ -23,7 +23,7 @@ static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_str
 
   */
 
-  //0x92800000 = mov xX, #-0x1
+  //0x92800000 = mov xX, #-0x1 0x92800001
   //& val = 0xFFFFFFE0, will include opcode, shift, and the immediate (-1)
   for (int i = 0; i < 50; i++) {
     if ((*opcode_stream & 0xFFFFFFE0) == 0x92800000) {
@@ -54,7 +54,7 @@ static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_str
       found_patch = true;
       break;
     }
-    opcode_stream--;
+    opcode_stream++;
   }
 
   if (!found_patch) {
@@ -84,14 +84,23 @@ int sock_puppet_all_callback() {
     return 1;
   }
 
+  /*
+     I could check for iOS 12 here, but iOS 13+ is supposed to be
+     supported, so no need for a check.
+  */
 
-  //This sequence may only appear on some devices, TODO: check more kernels
-  uint64_t in6_pcbdetach_opcodes[] = {
-    0x7CA00000,     //ldr       xX,[xX, #0xXXX]
+
+  /*
+    MATCHES
+      TESTED VERSIONS
+        iOS 14.5.1 18E212, iPhone10,1
+  */
+  uint32_t in6_pcbdetach_opcodes[] = {
+    0xF9400000,     //ldr       xX,[xX, #0xXXX]
     0xF900001F,     //str       xzr,[xX, #0xXXX]
-    0x7CA00000,     //ldr       xX,[xX, #0xXXX]
+    0xF9400000,     //ldr       xX,[xX, #0xXXX]
     0xF900001F,     //str       xzr,[xX, #0xXXX]
-    0xaa1303e0,     //mov       x0,x19
+    0xAA1303E0,     //mov       x0,x19
     0x52800001,     //mov       w1,#0x0
     0x94000000      //bl        xxx
   };
@@ -100,14 +109,14 @@ int sock_puppet_all_callback() {
       sizeof(in6_pcbdetach_opcodes) /
       sizeof(*in6_pcbdetach_opcodes);
 
-  uint64_t in6_pcbdetach_opcodes_masks[] = {
-    0x7FE00000, /*mask all*/
+  uint32_t in6_pcbdetach_opcodes_masks[] = {
+    0xFFC00000, /*mask all*/
     0xFFC0001F, /*mask base register and offset*/
-    0x7FE00000, /*mask all*/
+    0xFFC00000, /*mask all*/
     0xFFC0001F, /*mask base register and offset*/
-    0xffffffff,
-    0xffffffff,
-    0xfc000000, /*mask immediate*/
+    0xFFFFFFFF,
+    0xFFFFFFFF,
+    0xFC000000 /*mask immediate*/
   };
 
   xnu_pf_maskmatch(

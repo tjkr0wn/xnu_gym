@@ -106,7 +106,7 @@ void module_entry() {
   pretty_log("Initializing xnu_gym...", INFO);
   DEBUG("DEBUG enabled");
 
-  existing_preboot_hook = NULL;
+  existing_preboot_hook = preboot_hook;
   preboot_hook = do_all_patches;
   command_register("xnu_gym", "Send 'xnu_gym -h' for a list of commands", arg_parse);
 }
