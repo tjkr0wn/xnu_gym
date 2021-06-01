@@ -69,7 +69,7 @@
 
 # Issues
 
-  There may be some issues with finding opcode sequences/matching. If so, please submite an issue on this repo and I'll
+  There may be some issues with finding opcode sequences/matching. If so, please submit an issue on this repo and I'll
   check it out!
   
   If any other peculiar errors arrise, please do the same process!
