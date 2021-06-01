@@ -2,11 +2,16 @@ import sys
 import usb.core
 
 try:
-    data = open(sys.argv[1], "rb").read()
+    data = sys.argv[1]
 
 except IndexError:
-    print("python3 load_xnu_gym.py {location of module build}")
+    print("python3 load_xnu_gym.py {location of module build}\nPass 'n' instead if module is already loaded on device....")
     sys.exit(1337)
+
+if data == "n":
+    pass
+else:
+    data = open(data, "rb").read()
 
 dev = usb.core.find(idVendor=0x05ac, idProduct=0x4141)
 if dev is None:
@@ -32,8 +37,8 @@ while True:
     i = input(">")
     if i == "t":
         dev.ctrl_transfer(0x21, 3, 0, 0, "xnu_gym -t\n")
-    elif i = "s":
-	dev.ctrl_transfer(0x21, 3, 0, 0, "xnu_gym -s\n")
+    elif i == "s":
+	       dev.ctrl_transfer(0x21, 3, 0, 0, "xnu_gym -s\n")
     elif i == "r":
         dev.ctrl_transfer(0x21, 3, 0, 0, "xnu_gym -r\n")
     elif i == "m":
