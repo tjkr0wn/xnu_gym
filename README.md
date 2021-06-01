@@ -65,7 +65,7 @@
 
   *SHA256 Hashes of builds:*
 
-    Live build: <none>
+    Live build: <70a0f301c4d478410cd9d3279570871212ef564746ba00481a45bc98511069ca>
 
 # Issues
 
