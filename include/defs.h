@@ -10,8 +10,8 @@
 #define DEBUG(m) (pretty_log(m, DG))
 //#define DEBUG(m) (asm volatile("mov x0, x0\n"))
 
-#define SPIN() int f = 0;    \ 
-	while (true) {       \
-		f = 1;}      \
+#define SPIN()                     \
+	while (true) {int f = 1;}        \
+	//clang can kindly piss off
 
 #endif /* defs_h */
