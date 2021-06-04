@@ -7,14 +7,8 @@
 #define PATCH 4
 #define DG 5
 
-#define D1
-
-#define DEBUG(m) \
-	#ifdef D1 \
-		pretty_log(m, DG) \
-	#else \
-		asm volatile("mov x0, x0\n"); \
-	#endif \
+#define DEBUG(m) (pretty_log(m, DG);)
+//#define DEBUG(m) (asm volatile("mov x0, x0\n");)
 
 #define SPIN() \
 	while (true) {asm volatile("mov x0, x0\n");} \

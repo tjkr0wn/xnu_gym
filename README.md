@@ -61,7 +61,7 @@
   these binaries, feel free to build the module from source!
 
   Only difference between the source code and the binary is that the binary does
-  not have debug messages enabled. Simply uncomment the `#define D1` macro in the `xnu_gym.h` header file to enable it. (Not commented right now because testing XP)
+  not have debug messages enabled. Simply uncomment the `#define DEBUG` macro in the `xnu_gym.h` header file to enable it. (Not commented right now because testing XP)
 
   *SHA256 Hashes of builds:*
 
