@@ -7,11 +7,16 @@
 #define PATCH 4
 #define DG 5
 
-#define DEBUG(m) (pretty_log(m, DG))
-//#define DEBUG(m) (asm volatile("mov x0, x0\n"))
+#define D1
 
-#define SPIN()                     \
-	while (true) {int f = 1;}        \
-	//clang can kindly piss off
+#define DEBUG(m) \
+	#ifdef D1 \
+		pretty_log(m, DG) \
+	#else \
+		asm volatile("mov x0, x0\n"); \
+	#endif \
+
+#define SPIN() \
+	while (true) {asm volatile("mov x0, x0\n");} \
 
 #endif /* defs_h */

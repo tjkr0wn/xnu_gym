@@ -74,6 +74,8 @@ static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_str
 
   *opcode_stream = 0x52800001;
 
+  pretty_log("Done with handling in6_pcbdetach!", PATCH);
+
   return true;
 }
 

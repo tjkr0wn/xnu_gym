@@ -24,16 +24,16 @@
 
   **iOS Version:** I'm only supporting iOS versions 13.0 to 14.5.1
 
-  **Tested device/iOS Versions:** 
-  
+  **Tested device/iOS Versions:**
+
       *iPhone 8 global (iPhone10,1)*
-      
+
         iOS 14.5.1 (18E212)
-      
+
         iOS 13.6.1 (17G80)
-        
+
         iOS 13.0 (17A577)
-        
+
 
 # Loading/usage
 
@@ -61,7 +61,7 @@
   these binaries, feel free to build the module from source!
 
   Only difference between the source code and the binary is that the binary does
-  not have debug messages enabled. Simply uncomment the `DEBUG` macro in the `xnu_gym.h` header file to enable it.
+  not have debug messages enabled. Simply uncomment the `#define D1` macro in the `xnu_gym.h` header file to enable it. (Not commented right now because testing XP)
 
   *SHA256 Hashes of builds:*
 
@@ -71,7 +71,7 @@
 
   There may be some issues with finding opcode sequences/matching. If so, please submit an issue on this repo and I'll
   check it out!
-  
+
   If any other peculiar errors arrise, please do the same process!
 
 ❤️ from TK Cracks
