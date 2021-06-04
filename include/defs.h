@@ -11,6 +11,6 @@
 //#define DEBUG(m) (asm volatile("mov x0, x0\n");)
 
 #define SPIN() \
-	while (true) {asm volatile("mov x0, x0\n")} \
+	while (true) {asm volatile("mov x0, x0\n");} \
 
 #endif /* defs_h */
