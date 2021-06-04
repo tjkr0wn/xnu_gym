@@ -25,7 +25,7 @@ static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_str
     0x92800000 = mov xX, #-0x1
     & val = 0xFFFFFFE0, will include opcode, shift, and the immediate (-1)
   */
-  
+
   for (int i = 0; i < 50; i++) {
     if ((*opcode_stream & 0xFFFFFFE0) == 0x92800000) {
       found_mov = true;
@@ -100,7 +100,7 @@ int sock_puppet_all_callback() {
       TESTED VERSIONS
         iOS 14.5.1 18E212, iPhone10,1
   */
-  uint32_t in6_pcbdetach_opcodes[] = {
+  uint64_t in6_pcbdetach_opcodes[] = {
     0xF9400000,     //ldr       xX,[xX, #0xXXX]
     0xF900001F,     //str       xzr,[xX, #0xXXX]
     0xF9400000,     //ldr       xX,[xX, #0xXXX]
@@ -114,7 +114,7 @@ int sock_puppet_all_callback() {
       sizeof(in6_pcbdetach_opcodes) /
       sizeof(*in6_pcbdetach_opcodes);
 
-  uint32_t in6_pcbdetach_opcodes_masks[] = {
+  uint64_t in6_pcbdetach_opcodes_masks[] = {
     0xFFC00000, /*mask all*/
     0xFFC0001F, /*mask base register and offset*/
     0xFFC00000, /*mask all*/
