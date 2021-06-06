@@ -7,6 +7,8 @@ static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_str
   printf("%s: Entered matchhandler\n", __func__);
   xnu_pf_disable_patch(patch);
 
+  DumpHex(cacheable_stream - 7, 21);
+
   uint32_t *opcode_stream = cacheable_stream;
 
   bool found_mov = false;

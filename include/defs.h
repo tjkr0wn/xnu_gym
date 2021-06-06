@@ -13,4 +13,6 @@
 #define SPIN() \
 	while (true) {asm volatile("mov x0, x0\n");} \
 
+extern void DumpHex(const void* data, size_t size);
+
 #endif /* defs_h */
