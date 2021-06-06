@@ -24,6 +24,19 @@ static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_str
   */
 
   /*
+  LAB
+  f007e27630 3601 00b4     cbz       x22,LAB_fffffff007e27654
+  f007e27634 e003 16aa     mov       x0,x22
+  f007e27638 0100 8012     mov       w1,#0xffffffff
+  f007e2763c 0acb ff97     bl        FUN_fffffff007e1a264                       undefined FUN_fffffff007e1a2
+  f007e27640 80c7 fff0     adrp      x0,-0xff88e6000
+  f007e27644 0020 1591     add       x0=>PTR_PTR_DAT_fffffff00771a548,x0,#0x548 = fffffff00771a570
+  f007e27648 e103 16aa     mov       x1,x22
+  f007e2764c 0200 8092     mov       x2,#-0x1
+  f007e27650 649b f197     bl        FUN_fffffff007a8e3e0                       undefined FUN_fffffff007a8e3
+  */
+
+  /*
     0x92800000 = mov xX, #-0x1
     & val = 0xFFFFFFE0, will include opcode, shift, and the immediate (-1)
   */
