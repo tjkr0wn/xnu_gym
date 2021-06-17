@@ -3,9 +3,16 @@
 
 extern void pretty_log(char *m, int err);
 
+//It's ugly but I put this in a global scope so that I can do some debug stuff
+struct mach_header_64 *main_header;
+xnu_pf_range_t *TEXTEXEC;
+
 static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_stream) {
   printf("%s: Entered matchhandler\n", __func__);
   xnu_pf_disable_patch(patch);
+
+  debug("TEXTEXEC->cacheable_base: %p\n", 1, (void *) TEXTEXEC->cacheable_base);
+  debug("Offset from __TEXT_EXEC: %d\n", 1, (void *) TEXTEXEC->cacheable_base - (void *) cacheable_stream);
 
   DumpHex(cacheable_stream - 7, 21);
 
@@ -54,7 +61,7 @@ static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_str
     SPIN();
   }
 
-  DEBUG("Found an instr with - val!");
+  debug("Found an instr with - val!\n", 0);
 
   /*
   Lastly, we have to increment the stream to find where inp->in6p_outputopts is NULL'ed. This is extremely trivial
@@ -79,7 +86,7 @@ static bool handle_in6_pcbdetach(struct xnu_pf_patch* patch, void* cacheable_str
     SPIN();
   }
 
-  DEBUG("Found inp->in6p_outputopts == NULL!");
+  debug("Found inp->in6p_outputopts == NULL!\n", 0);
 
   /*
     And we just replace it with a nop :)
@@ -98,8 +105,8 @@ int sock_puppet_all_callback() {
   pretty_log("Doing sock_puppet patches. Transferring output to match handlers...", INFO);
 
   xnu_pf_patchset_t *patchset = xnu_pf_patchset_create(XNU_PF_ACCESS_32BIT);
-  struct mach_header_64 *main_header = xnu_header();
-  xnu_pf_range_t *TEXTEXEC = xnu_pf_segment(main_header, "__TEXT_EXEC");
+  main_header = xnu_header();
+  TEXTEXEC = xnu_pf_segment(main_header, "__TEXT_EXEC");
 
   if (!patchset || !main_header || !TEXTEXEC) {
     pretty_log("Got a NULL value!", FAIL);

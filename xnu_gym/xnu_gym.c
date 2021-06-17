@@ -2,12 +2,24 @@
 #include <xnu_gym.h>
 #include <defs.h>
 #include <bug_desc.h>
+#include <stdarg.h>
 
 void (*existing_preboot_hook)();
 struct bug_t *g_top_patch = NULL;
 struct bug_t *null_patch = NULL;
 int g_queued_patches_counter = 0;
 int g_failed_patches_counter = 0;
+
+void debug(const char * s, int c, ...) {
+  #ifdef DEBUGBUILD
+  va_list args;
+  va_start(args, c);
+  printf("xnu_gym: [DEBUG] ");
+  printf(s, args);
+  va_end(args);
+  #endif
+  return;
+}
 
 void pretty_log(char *m, int err) {
   switch (err) {
@@ -23,9 +35,6 @@ void pretty_log(char *m, int err) {
     case PATCH:
       printf("xnu_gym: [-] %s\n", m);
       return;
-    case DG:
-      printf("xnu_gym: [DEBUG] %s\n", m);
-      return;
   }
 }
 
@@ -40,7 +49,7 @@ static void print_help() {
 }
 
 void init_new_patch(int (*cb)()) {
-  DEBUG("Making a patch...");
+  debug("Making a patch...\n", 0);
 
   struct bug_t *patch = malloc(sizeof(struct bug_t));
   if (patch == NULL) {
@@ -104,7 +113,7 @@ static void do_all_patches() {
 
 void module_entry() {
   pretty_log("Initializing xnu_gym...", INFO);
-  DEBUG("DEBUG enabled");
+  debug("DEBUG enabled\n", 0);
 
   existing_preboot_hook = preboot_hook;
   preboot_hook = do_all_patches;
