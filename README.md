@@ -4,7 +4,7 @@
 # xnu_gym
 
   `xnu_gym` is a project meant to purposely inject bugs into an iOS kernel that are
-  trigerrable from Userspace. This is perfect for any beginner to iOS kernel
+  trigerrable from userspace. This is perfect for any beginner to iOS kernel
   exploitation so that they can practice their skills from exploitation to launching
   a full jailbreak on a device.
 
@@ -57,15 +57,15 @@
 
 # Building
 
-  I provide a binary in the builds directory. If you don't feel comfortable using one of
+  I provide a binary in the `build` directory. If you don't feel comfortable using one of
   these binaries, feel free to build the module from source!
 
   Only difference between the source code and the binary is that the binary does
-  not have debug messages enabled. Simply uncomment the `#define DEBUG` macro in the `xnu_gym.h` header file to enable it. (Not commented right now because testing XP)
+  not have debug messages enabled. Simply un-comment the `#define DEBUGBUILD` macro in the `defs.h` header file to enable it. (Not commented right now because testing)
 
   *SHA256 Hashes of builds:*
 
-    Live build: <70a0f301c4d478410cd9d3279570871212ef564746ba00481a45bc98511069ca>
+    Live build: <283c7bada51a1243c3d92560d3871cb1b5f2217a23810c1900e60f5410d25471>
 
 # Issues
 
